@@ -190,5 +190,5 @@ He decidido generar e implementar un **nuevo icono personalizado** para la pesta
 
 ## 25. Navegación Móvil: Menú Hamburguesa
 
-### Implementación del Menú Colapsable
-Debido a la cantidad de secciones en el Navbar y el espacio limitado en dispositivos móviles, he decidido implementar un **menú hamburguesa**. Esta decisión resuelve los problemas de desbordamiento visual y solapamiento de elementos en pantallas pequeñas. He utilizado `AnimatePresence` de Framer Motion para crear una transición lateral fluida y un fondo desenfocado (`backdrop-blur-xl`) que mantiene la estética misteriosa del portafolio. Además, he centralizado los enlaces en un array `navLinks` para cumplir con el principio de **Don't Repeat Yourself (DRY)**, facilitando el mantenimiento futuro tanto del menú desktop como del móvil.
+### Implementación del Menú Lateral (Refinada)
+Tras el feedback sobre la transparencia y la obstrucción de la sección Hero, he decidido refactorizar el menú móvil a una **barra lateral (sidebar) sólida**. He sustituido el overlay centrado por un diseño que se desliza desde la derecha, utilizando un fondo `bg-ds-black` casi opaco para garantizar la legibilidad. He añadido una **capa de atenuación (backdrop)** con desenfoque suave para separar visualmente el menú del contenido principal. Esta estructura no solo es más común y cómoda en dispositivos móviles, sino que también refuerza la jerarquía visual del portafolio al tratar el menú como una capa superior e independiente.

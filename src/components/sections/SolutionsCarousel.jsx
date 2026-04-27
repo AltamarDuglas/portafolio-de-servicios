@@ -50,7 +50,7 @@ const SolutionsCarousel = () => {
         animate={controls}
         onDragStart={() => controls.stop()}
         onDragEnd={() => startInfiniteScroll()}
-        className="flex flex-col gap-4 font-serif text-ds-parchment/60 uppercase tracking-widest text-xs md:text-sm cursor-grab active:cursor-grabbing"
+        className="flex flex-col gap-4 font-serif text-ds-parchment/80 uppercase tracking-widest text-xs md:text-sm cursor-grab active:cursor-grabbing"
       >
         {items.map((item, index) => (
           <span key={index} className="h-12 flex items-center justify-center text-center px-4">

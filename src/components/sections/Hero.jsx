@@ -29,10 +29,10 @@ const Hero = ({ onNavigateAbout }) => {
         transition={{ duration: 1 }}
         className="relative"
       >
-        <h1 className="text-6xl md:text-8xl mb-4 text-ds-parchment font-heading drop-shadow-[0_5px_15px_rgba(139,0,0,0.4)]">
+        <h1 className="text-5xl sm:text-6xl md:text-8xl mb-4 text-ds-parchment font-heading drop-shadow-[0_5px_15px_rgba(139,0,0,0.4)] leading-tight">
           Duglas Altamar Gómez
         </h1>
-        <p className="text-xl md:text-2xl font-serif text-ds-ember mb-8">
+        <p className="text-lg md:text-xl lg:text-2xl font-serif text-ds-ember mb-8 max-w-xl mx-auto leading-snug">
           Licenciado en Informática & Desarrollador de Software a la medida
         </p>
 
@@ -58,7 +58,7 @@ const Hero = ({ onNavigateAbout }) => {
           </div>
 
           {/* Enlaces de Contacto Rápido con Animación de Respiración */}
-          <div className="flex gap-8 items-center text-ds-parchment/60">
+          <div className="flex gap-6 md:gap-8 justify-center items-center text-ds-parchment/80">
             <a
               href="https://linkedin.com/in/duglas-altamar-gomez-9b559a317"
               target="_blank"
