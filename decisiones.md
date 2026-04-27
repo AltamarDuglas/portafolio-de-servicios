@@ -180,10 +180,15 @@ Siguiendo mi objetivo de dotar al portafolio de una estética de ingeniería de 
 
 ## 23. Dinamismo Atmosférico: Estrellas Fugaces
 
-### Implementación de ShootingStars
-He decidido añadir un efecto de **estrellas fugaces** que aparecen de forma aleatoria y ocasional. Esta decisión busca romper la monotonía del fondo de partículas estático y añadir un elemento de "sorpresa" y deleite para el usuario. Para mantener el rendimiento óptimo, he creado un componente ligero que gestiona su propio ciclo de vida y utiliza animaciones CSS puras. El uso de `z-index` negativo asegura que las estrellas permanezcan en el plano del fondo, reforzando la profundidad visual sin interferir con la interactividad de las tarjetas de proyecto o el texto principal.
+### Implementación de ShootingStars (Refinada)
+Basándome en el feedback sobre la naturalidad del efecto, he refactorizado la lógica de generación. He sustituido el intervalo fijo por un **timeout recursivo con retrasos variables (4-10 segundos)**, lo que evita la aparición simultánea de múltiples estrellas y hace que el evento sea verdaderamente ocasional. Además, he acelerado la animación CSS y reducido el tamaño de la estela para lograr un efecto más sutil y "premium" que se integra mejor con el fondo de partículas sin distraer al usuario.
 
 ## 24. Identidad Visual: Icono Personalizado (Favicon)
 
 ### Creación del Favicon
 He decidido generar e implementar un **nuevo icono personalizado** para la pestaña del navegador. Siguiendo la estética de "llama gótica" que ya utilizábamos en el logo principal, este nuevo icono ha sido diseñado con un estilo de trazo de carbón y alto contraste. Esta decisión busca unificar la experiencia de marca desde el momento en que el usuario ve la pestaña de su navegador, asegurando que el portafolio se sienta como un producto completo, profesional y cuidado en cada detalle visual. He migrado del formato SVG genérico a un PNG de alta resolución para asegurar una representación fiel del estilo artístico "sketchy".
+
+## 25. Navegación Móvil: Menú Hamburguesa
+
+### Implementación del Menú Colapsable
+Debido a la cantidad de secciones en el Navbar y el espacio limitado en dispositivos móviles, he decidido implementar un **menú hamburguesa**. Esta decisión resuelve los problemas de desbordamiento visual y solapamiento de elementos en pantallas pequeñas. He utilizado `AnimatePresence` de Framer Motion para crear una transición lateral fluida y un fondo desenfocado (`backdrop-blur-xl`) que mantiene la estética misteriosa del portafolio. Además, he centralizado los enlaces en un array `navLinks` para cumplir con el principio de **Don't Repeat Yourself (DRY)**, facilitando el mantenimiento futuro tanto del menú desktop como del móvil.

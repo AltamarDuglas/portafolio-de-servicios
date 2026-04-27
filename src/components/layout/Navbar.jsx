@@ -1,5 +1,6 @@
-import { motion } from "framer-motion";
-import { User, Code2, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { User, Code2, Sparkles, Menu, X } from "lucide-react";
 import LogoSVG from "../LogoSVG";
 
 /**
@@ -7,9 +8,11 @@ import LogoSVG from "../LogoSVG";
  * Maneja el cambio de vista y el desplazamiento suave (smooth scroll) hacia las secciones.
  */
 const Navbar = ({ view, setView, activeSection }) => {
+  const [isOpen, setIsOpen] = useState(false);
   
   // Función para manejar la navegación cruzada entre vistas y secciones
   const handleNavClick = (targetView, targetId) => {
+    setIsOpen(false); // Cerramos el menú móvil si está abierto
     if (view !== targetView) {
       setView(targetView);
       if (targetId) {
@@ -33,6 +36,14 @@ const Navbar = ({ view, setView, activeSection }) => {
   // Determinar si una sección está activa
   const isActive = (id) => activeSection === id;
 
+  const navLinks = [
+    { label: "Inicio", target: "home", id: null, section: "hero" },
+    { label: "Proyectos", target: "home", id: "projects", section: "projects" },
+    { label: "Habilidades", target: "home", id: "skills", section: "skills" },
+    { label: "Conóceme", target: "about", id: null, section: null },
+    { label: "Contacto", target: "home", id: "contact", section: "contact" },
+  ];
+
   return (
     <nav className="fixed top-0 w-full h-20 z-50 px-6 md:px-16 py-4 md:py-6 flex justify-between items-center bg-ds-black/90 backdrop-blur-md border-b border-ds-charcoal/50">
       
@@ -46,64 +57,61 @@ const Navbar = ({ view, setView, activeSection }) => {
         </div>
       </div>
 
-      {/* Enlaces de Navegación */}
-      <div className="flex gap-4 md:gap-8 lg:gap-12 font-serif text-[9px] md:text-sm uppercase tracking-[0.1em] md:tracking-[0.2em] items-center text-ds-parchment/60">
-        
-        {/* Inicio */}
-        <button
-          onClick={() => handleNavClick("home", null)}
-          className={`relative py-1 transition-all hover:text-ds-ember whitespace-nowrap ${isActive('hero') && view === 'home' ? "text-ds-ember font-bold" : ""}`}
-        >
-          Inicio
-          {isActive('hero') && view === 'home' && (
-            <motion.div layoutId="nav-underline" className="absolute -bottom-1 left-0 w-full h-[2px] bg-ds-blood rounded-full" />
-          )}
-        </button>
+      {/* Menú Desktop */}
+      <div className="hidden md:flex gap-8 lg:gap-12 font-serif text-sm uppercase tracking-[0.2em] items-center text-ds-parchment/60">
+        {navLinks.map((link) => (
+          <button
+            key={link.label}
+            onClick={() => handleNavClick(link.target, link.id)}
+            className={`relative py-1 transition-all hover:text-ds-ember whitespace-nowrap 
+              ${(link.section === activeSection && view === 'home') || (link.target === 'about' && view === 'about') 
+                ? "text-ds-ember font-bold" : ""}`}
+          >
+            {link.label}
+            {((link.section === activeSection && view === 'home') || (link.target === 'about' && view === 'about')) && (
+              <motion.div layoutId="nav-underline" className="absolute -bottom-1 left-0 w-full h-[2px] bg-ds-blood rounded-full" />
+            )}
+          </button>
+        ))}
+      </div>
 
-        {/* Proyectos */}
+      {/* Botón Hamburguesa (Móvil) */}
+      <div className="md:hidden">
         <button
-          onClick={() => handleNavClick("home", "projects")}
-          className={`relative py-1 transition-all hover:text-ds-ember whitespace-nowrap ${isActive('projects') ? "text-ds-ember font-bold" : ""}`}
+          onClick={() => setIsOpen(!isOpen)}
+          className="text-ds-parchment p-2 hover:bg-ds-charcoal/30 rounded-lg transition-colors"
         >
-          Proyectos
-          {isActive('projects') && (
-            <motion.div layoutId="nav-underline" className="absolute -bottom-1 left-0 w-full h-[2px] bg-ds-blood rounded-full" />
-          )}
-        </button>
-
-        {/* Habilidades */}
-        <button
-          onClick={() => handleNavClick("home", "skills")}
-          className={`relative py-1 transition-all hover:text-ds-ember whitespace-nowrap ${isActive('skills') ? "text-ds-ember font-bold" : ""}`}
-        >
-          Habilidades
-          {isActive('skills') && (
-            <motion.div layoutId="nav-underline" className="absolute -bottom-1 left-0 w-full h-[2px] bg-ds-blood rounded-full" />
-          )}
-        </button>
-
-        {/* Conóceme */}
-        <button
-          onClick={() => handleNavClick("about", null)}
-          className={`relative py-1 transition-all hover:text-ds-ember whitespace-nowrap ${view === "about" ? "text-ds-ember font-bold" : ""}`}
-        >
-          Conóceme
-          {view === "about" && (
-            <motion.div layoutId="nav-underline" className="absolute -bottom-1 left-0 w-full h-[2px] bg-ds-blood rounded-full" />
-          )}
-        </button>
-
-        {/* Contacto */}
-        <button 
-          onClick={() => handleNavClick("home", "contact")}
-          className={`relative py-1 transition-all hover:text-ds-ember whitespace-nowrap ${isActive('contact') ? "text-ds-ember font-bold" : ""}`}
-        >
-          Contacto
-          {isActive('contact') && (
-            <motion.div layoutId="nav-underline" className="absolute -bottom-1 left-0 w-full h-[2px] bg-ds-blood rounded-full" />
-          )}
+          {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
+
+      {/* Menú Móvil Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed inset-0 top-20 bg-ds-black/98 backdrop-blur-xl z-40 flex flex-col items-center justify-center gap-10 md:hidden"
+          >
+            {navLinks.map((link, i) => (
+              <motion.button
+                key={link.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                onClick={() => handleNavClick(link.target, link.id)}
+                className={`text-2xl font-serif uppercase tracking-[0.3em] transition-all
+                  ${(link.section === activeSection && view === 'home') || (link.target === 'about' && view === 'about') 
+                    ? "text-ds-blood" : "text-ds-parchment/70"}`}
+              >
+                {link.label}
+              </motion.button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

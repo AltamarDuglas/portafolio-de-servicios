@@ -11,35 +11,45 @@ const ShootingStars = () => {
   const [stars, setStars] = useState([]);
 
   useEffect(() => {
+    let timeoutId;
+    
     // Función para crear una nueva estrella con propiedades aleatorias
     const createStar = () => {
       const id = Math.random().toString(36).substring(2, 9);
+      
+      // Aleatorizamos la posición de inicio (fuera de pantalla o bordes)
+      const x = Math.random() * 100;
+      const y = Math.random() * 40; // Solo en la parte superior
+
       const style = {
-        top: `${Math.random() * 50}%`, // Salen desde la mitad superior
-        left: `${Math.random() * 100}%`,
-        animationDuration: `${Math.random() * 2 + 1}s`, // Velocidad variable
+        top: `${y}%`,
+        left: `${x}%`,
+        animationDuration: `${Math.random() * 1 + 1}s`, // Más rápido (1-2s)
         animationDelay: "0s",
       };
 
       const newStar = { id, style };
       
-      setStars((prevStars) => [...prevStars, newStar]);
+      setStars((prevStars) => {
+        // Limitamos a máximo 2 estrellas simultáneas para evitar saturación
+        if (prevStars.length >= 2) return prevStars;
+        return [...prevStars, newStar];
+      });
 
-      // Eliminamos la estrella después de que termine su animación (aprox 3s)
+      // Eliminamos la estrella después de su animación (2s es suficiente ahora)
       setTimeout(() => {
         setStars((prevStars) => prevStars.filter((star) => star.id !== id));
-      }, 3000);
+      }, 2000);
+
+      // Programamos la siguiente estrella con un retraso mucho más largo y variable
+      const nextDelay = Math.random() * 6000 + 4000; // Entre 4 y 10 segundos
+      timeoutId = setTimeout(createStar, nextDelay);
     };
 
-    // Intervalo para generar estrellas de forma aleatoria
-    const interval = setInterval(() => {
-      // Solo creamos una estrella si hay "suerte" (simula aleatoriedad ocasional)
-      if (Math.random() > 0.6) {
-        createStar();
-      }
-    }, 2000);
+    // Iniciamos el ciclo
+    timeoutId = setTimeout(createStar, 2000);
 
-    return () => clearInterval(interval);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (
